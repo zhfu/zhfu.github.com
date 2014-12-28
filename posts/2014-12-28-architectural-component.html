@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>zhfu's blog - 基础架构必备功能与组件</title>
+  <meta charset="utf-8" />
+  <link href="http://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Crimson+Text" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="../css/default.css" />
+  <link rel="stylesheet" type="text/css" href="../css/syntax.css" />
+  <link rel="alternate" type="application/atom+xml" title="zhfu's blog (Atom)" href="../atom.xml" />
+</head>
+<body>
+    <header>
+      <hgroup>
+        <h1><a href="../">zhfu's blog</a></h1>
+        <h2>A log of my journey through programming</h2>
+      </hgroup>
+    </header>
+    <nav>
+        <menu>
+          <a href="../">Home</a>
+          <a href="../posts.html">All posts</a>
+          <a href="http://zhfu.github.io">About me</a>
+          <a href="../atom.xml">Atom feed</a>
+        </menu>
+    </nav>
+    <section>
+        <article>
+<header>
+<h1>基础架构必备功能与组件</h1>
+<p>by <em>fukirk</em> on <strong>December 28, 2014</strong></p>
+<p>Tagged as: <a href="../tags/architecture.html">architecture</a>, <a href="../tags/midwire.html">midwire</a>.</p>
+</header>
+
+<section>
+<h3 id="backend">backend:</h3>
+<ul>
+<li><p>WEB frameworks. For business logic.</p></li>
+<li><p>Naming Service. 服务与机器列表解耦，方便运维。为了管理方便，一般分部门分组分业务成树状组织。好多公司使用zoopkeeper实现，完全没必要，该功能对一致性要求很低，对可用性要求极高，好的方式使用mysql + cache实现，本机加带cache的naming agent(减少对模块的侵入，方便升级）。同时增加一些额外信息的支持，如百度BNS，单独机器与服务都可配置k-v键值对。同时防止naming service的错误引起的雪崩，如增加阈值、低于阈值不更新功能以避免误配置，如何支持单机预上线验证。</p></li>
+<li><p>ACL. web模块访问后端的中间层，一般与Naming Service相关联，需要支持不同协议和格式转换，配置简洁，作为web框架扩展或单独服务（建议作为框架扩展）。参考百度的RAL。</p></li>
+<li><p>DBproxy. 方便读写分离，自动化主从切换。</p></li>
+<li><p>cache cluster. 缓存应该可用性高。</p></li>
+<li><p>日志相关。不同语言、不同框架、不同模块日志格式要统一，切日志，日志传输，日志统计。一般用hive等进行分布式存储。</p></li>
+<li><p>服务网络框架。高效、接口一致、协议简单。包含日志输出、timer、ip auth、局部存储、内部状态统计等功能。</p></li>
+<li><p>二进制序列化、反序列化库。格式要向前兼容、多语言支持、效率高、使用方便、调试容易。自带IDL自动生成多语言接口。</p></li>
+<li><p>ORM，可选，视业务复杂程序而定。</p></li>
+</ul>
+</section>
+</article>
+
+<section>
+<div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'blogclementd',
+                disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/posts/2014-12-28-architectural-component.html';
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+    </section>
+    <footer>
+        <p>
+        <a href="http://zhfu.github.io">zhfu's blog</a> -
+        <a href="http://jaspervdj.be/hakyll/index.html">Generated with Hakyll</a> -
+        <a href="http://github.com/zhfu/blog">Source code</a>
+        </p>
+        <p>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br />This
+        work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative
+            Commons Attribution-ShareAlike 3.0 Unported License</a>.
+        </p>
+
+    </footer>
+    <script type="text/javascript">
+
+
+    </script>
+</body>
+</html>
