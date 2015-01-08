@@ -23,7 +23,7 @@
 </header>
 
 <section>
-<p>计划去杭州，开始学习java，^_^</p>
+<p>计划去杭州，虽然之前用过但忘光了，开始补java及深入研究，^_^</p>
 <h4 id="安装">安装</h4>
 <p>到官网下载<a href="http://maven.apache.org/">Maven</a>, 将bin加入$PATH后即可,maven配置文件在conf目录下。</p>
 <h4 id="使用">使用</h4>
@@ -31,6 +31,9 @@
 <p>创建hi(artifactId)目录，及目录下的pom.xml，在其中自动添加了junit依赖。src下自动生成hello world。</p>
 <h5 id="构建">构建</h5>
 <p><code>mvn package</code> 结果在target目录下，运行<code>java -cp target/hi-1.0.jar com.kirk.hi.App</code></p>
+<h5 id="intellij">intellij</h5>
+<p>create project-&gt;右键Add Framework Support-&gt;maven，自动生成pom.xml</p>
+<p>把netty依赖写入pom.xml后，参考netty的user guide写个简单例子学习netty</p>
 </section>
 </article>
 ]]></summary>
