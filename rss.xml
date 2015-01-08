@@ -6,8 +6,61 @@
         <description><![CDATA[blog]]></description>
         <atom:link href="http://zhfu.github.io/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Sun, 28 Dec 2014 00:00:00 UT</lastBuildDate>
+        <lastBuildDate>Thu, 08 Jan 2015 00:00:00 UT</lastBuildDate>
         <item>
+    <title>maven 使用</title>
+    <link>http://zhfu.github.io/posts/2015-01-08-maven.html</link>
+    <description><![CDATA[<article>
+<header>
+<h1>maven 使用</h1>
+<p>by <em>fukirk</em> on <strong>January  8, 2015</strong></p>
+<p>Tagged as: <a href="http://zhfu.github.io/tags/java.html">java</a>, <a href="http://zhfu.github.io/tags/maven.html">maven</a>.</p>
+</header>
+
+<section>
+<p>计划去杭州，开始学习java，^_^</p>
+<h4 id="安装">安装</h4>
+<p>到官网下载<a href="http://maven.apache.org/">Maven</a>, 将bin加入$PATH后即可,maven配置文件在conf目录下。</p>
+<h4 id="使用">使用</h4>
+<p><code>mvn archetype:create -DgroupId=com.kirk.hi -DartifactId=hi -DpackageName=com.kirk.hi -Dversion=1.0</code></p>
+<p>创建hi(artifactId)目录，及目录下的pom.xml，在其中自动添加了junit依赖。src下自动生成hello world。</p>
+<h5 id="构建">构建</h5>
+<p><code>mvn package</code> 结果在target目录下，运行<code>java -cp target/hi-1.0.jar com.kirk.hi.App</code></p>
+</section>
+</article>
+]]></description>
+    <pubDate>Thu, 08 Jan 2015 00:00:00 UT</pubDate>
+    <guid>http://zhfu.github.io/posts/2015-01-08-maven.html</guid>
+</item>
+<item>
+    <title>nanomsg代码阅读-简单例子</title>
+    <link>http://zhfu.github.io/posts/2015-01-06-nanomsg.html</link>
+    <description><![CDATA[<article>
+<header>
+<h1>nanomsg代码阅读-简单例子</h1>
+<p>by <em>fukirk</em> on <strong>January  6, 2015</strong></p>
+<p>Tagged as: <a href="http://zhfu.github.io/tags/nanomsg.html">nanomsg</a>, <a href="http://zhfu.github.io/tags/net.html">net</a>, <a href="http://zhfu.github.io/tags/code.html">code</a>.</p>
+</header>
+
+<section>
+<h4 id="阅读开源代码方法">阅读开源代码方法</h4>
+<p>如果是lib库，先写个简单例子，弄清楚整体流程之后，把附加功能添加进去，流程足够清晰后把无法添加的功能代码搞明白。</p>
+<p>如果是可单独运行的，直接使用最小配置运行，大概弄清楚之后，逐步添加配置项看代码，直至完全弄明白。</p>
+<p>例子参见(这篇blog)[http://tim.dysinger.net/posts/2013-09-16-getting-started-with-nanomsg.html]。</p>
+<h4 id="关键概念">关键概念</h4>
+<pre><code>aio目录里的nn_ctx、nn_fsm、nn_pool</code></pre>
+<h4 id="运行过程栈">运行过程栈</h4>
+<h5 id="pull端">pull端</h5>
+<pre><code>nn_socket创建socket句柄。
+	nn_global_create_socket。self为nn_global类型单例全局状态变量。
+                  nn_alloc、nn_sock_init创建socket</code></pre>
+</section>
+</article>
+]]></description>
+    <pubDate>Tue, 06 Jan 2015 00:00:00 UT</pubDate>
+    <guid>http://zhfu.github.io/posts/2015-01-06-nanomsg.html</guid>
+</item>
+<item>
     <title>[转]当你下班时，你需要忙些什么?</title>
     <link>http://zhfu.github.io/posts/2014-12-28-self-improvement.html</link>
     <description><![CDATA[<article>
@@ -69,6 +122,11 @@
 <ul>
 <li><p>WEB frameworks. For business logic.</p></li>
 <li><p>Naming Service. 服务与机器列表解耦，方便运维。为了管理方便，一般分部门分组分业务成树状组织。好多公司使用zoopkeeper实现，完全没必要，该功能对一致性要求很低，对可用性要求极高，好的方式使用mysql + cache实现，本机加带cache的naming agent(减少对模块的侵入，方便升级）。同时增加一些额外信息的支持，如百度BNS，单独机器与服务都可配置k-v键值对。同时防止naming service的错误引起的雪崩，如增加阈值、低于阈值不更新功能以避免误配置，如何支持单机预上线验证。</p></li>
+</ul>
+<p>开源项目参考Netflix的(eureka)[https://github.com/Netflix/eureka/)</p>
+<p>相关文章</p>
+<p>使用zookeeper作naming service的坏处 http://www.infoq.com/cn/news/2014/12/zookeeper-service-finding</p>
+<ul>
 <li><p>ACL. web模块访问后端的中间层，一般与Naming Service相关联，需要支持不同协议和格式转换，配置简洁，作为web框架扩展或单独服务（建议作为框架扩展）。参考百度的RAL。</p></li>
 <li><p>DBproxy. 方便读写分离，自动化主从切换。</p></li>
 <li><p>cache cluster. 缓存应该可用性高。</p></li>
