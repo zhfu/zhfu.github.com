@@ -28,7 +28,7 @@
 <p>如果从一棵树取出两层，可以将第一层看作一堆孤立根结点，第二层是这些根结点的子结点的按顺序排列，那么只要在第二层结点中加入一些标记，将同一父节点的节点划分到一块，即将第二层分段就可以序列化反序列化父子关系。所以BFS方式的序列化反序列化其实很简单。</p>
 <p>代码</p>
 <p>struct Node{ string data; vector<Node *> child; };</p>
-<p>string serialize(Node <em>root) { queue<Node *> q; if(root == NULL) return string(); q.push(root); char tag = ‘x’; string ret = tag + serialize(root-&gt;data) + tag; while(!q.empty()) { Node </em>cur = que.front(); que.pop(); ret += tag; for(size_t i = 0; i &lt; cur-&gt;child.size(); ++i) { ret += serialize(cur-&gt;child[i]); que.push(cur-&gt;child[i]); } ret += tag; } return ret; }</p>
+<p>string serialize(Node <em>root) { queue<Node *> q; if(root == NULL) return string(); q.push(root); char tag = ‘x’; string ret = tag + serialize(root-&gt;data) + tag;//serialize string == puts value tag, length of string, string itself while(!q.empty()) { Node </em>cur = que.front(); que.pop(); ret += tag; for(size_t i = 0; i &lt; cur-&gt;child.size(); ++i) { ret += serialize(cur-&gt;child[i]); que.push(cur-&gt;child[i]); } ret += tag; } return ret; }</p>
 <p>Node* unserialize(string input) { if(input.empty()) return NULL; queue<Node*> q; Node* root; for(size_t i = 0; i &lt; input.size(); /<em>empty on purpose</em>/) { Node <em>tmp = NULL; if(!q.empty()) { tmp = q.front(); q.pop(); } if(str[i] == tag) { i += 1; while(str[i] != tag) { int len; string str = unserialize(input, i + 1, len); Node </em>node = new Node(str); if(tmp) tmp-&gt;child.push_back(node); else root = node; q.push(node); } i += 1; } } return root; }</p>
 </section>
 </article>
