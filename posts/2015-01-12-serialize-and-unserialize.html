@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <title>zhfu's blog - maven和sbt使用</title>
+  <title>zhfu's blog - 序列化与反序列化</title>
   <meta charset="utf-8" />
   <link href="http://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css">
   <link href="http://fonts.googleapis.com/css?family=Crimson+Text" rel="stylesheet" type="text/css">
@@ -27,25 +27,19 @@
     <section>
         <article>
 <header>
-<h1>maven和sbt使用</h1>
-<p>by <em>fukirk</em> on <strong>January  8, 2015</strong></p>
-<p>Tagged as: <a href="../tags/java.html">java</a>, <a href="../tags/maven.html">maven</a>.</p>
+<h1>序列化与反序列化</h1>
+<p>by <em>fukirk</em> on <strong>January 12, 2015</strong></p>
+<p>Tagged as: <a href="../tags/%E5%BA%8F%E5%88%97%E5%8C%96.html">序列化</a>, <a href="../tags/protobuf.html">protobuf</a>.</p>
 </header>
 
 <section>
-<p>计划去杭州，虽然之前用过java但忘光了，开始补java及深入研究，^_^。在学校也看过大半年scala，之后用不着就扔了，现在也捡起来吧，kafka和spark这么火，看看代码学习。</p>
-<h3 id="maven">maven</h3>
-<h4 id="安装">安装</h4>
-<p>到官网下载<a href="http://maven.apache.org/">Maven</a>, 将bin加入$PATH后即可,maven配置文件在conf目录下。</p>
-<h4 id="使用">使用</h4>
-<p><code>mvn archetype:create -DgroupId=com.kirk.hi -DartifactId=hi -DpackageName=com.kirk.hi -Dversion=1.0</code></p>
-<p>创建hi(artifactId)目录，及目录下的pom.xml，在其中自动添加了junit依赖。src下自动生成hello world。</p>
-<h5 id="构建">构建</h5>
-<p><code>mvn package</code> 结果在target目录下，运行<code>java -cp target/hi-1.0.jar com.kirk.hi.App</code></p>
-<h5 id="intellij">intellij</h5>
-<p>create project-&gt;右键Add Framework Support-&gt;maven，自动生成pom.xml</p>
-<p>把netty依赖写入pom.xml后，参考netty的user guide写个简单例子学习netty</p>
-<h3 id="sbt">sbt</h3>
+<h3 id="写protobuf前先来道面试题-_--transform-a-tree-from-computer-a-to-computer-b">写protobuf前先来道面试题-_- transform A tree from computer A to computer B?</h3>
+<p>A机器与B机器之间内存无法互相访问，必然需要序列化与反序列化，树要序列化必然要进行遍历，有DFS、BFS两种遍历方式，DFS大家熟知的序列化格式有xml、json或类似的方式。这里讲种BFS遍历方式，反序列化即构建树的层次结构，树本身是递归定义的，而DFS过程本身也是递归定义的，所以两者结合比较简单，对于BFS来说我们有什么，层次信息，即可以知道一层结点和下一层结点，而结点和它的子结点也构成层次关系，那么怎么利用层次关系进行反序列化？</p>
+<p>如果从一棵树取出两层，可以将第一层看作一堆孤立根结点，第二层是这些根结点的子结点的按顺序排列，那么只要在第二层结点中加入一些标记，将同一父节点的节点划分到一块，即将第二层分段就可以序列化反序列化父子关系。所以BFS方式的序列化反序列化其实很简单。</p>
+<p>代码</p>
+<p>struct Node{ string data; vector<Node *> child; };</p>
+<p>string serialize(Node <em>root) { queue<Node *> q; if(root == NULL) return string(); q.push(root); char tag = ‘x’; string ret = tag + serialize(root-&gt;data) + tag; while(!q.empty()) { Node </em>cur = que.front(); que.pop(); ret += tag; for(size_t i = 0; i &lt; cur-&gt;child.size(); ++i) { ret += serialize(cur-&gt;child[i]); que.push(cur-&gt;child[i]); } ret += tag; } return ret; }</p>
+<p>Node* unserialize(string input) { if(input.empty()) return NULL; queue<Node*> q; Node* root; for(size_t i = 0; i &lt; input.size(); /<em>empty on purpose</em>/) { Node <em>tmp = NULL; if(!q.empty()) { tmp = q.front(); q.pop(); } if(str[i] == tag) { i += 1; while(str[i] != tag) { int len; string str = unserialize(input, i + 1, len); Node </em>node = new Node(str); if(tmp) tmp-&gt;child.push_back(node); else root = node; q.push(node); } i += 1; } } return root; }</p>
 </section>
 </article>
 
@@ -54,7 +48,7 @@
         <script type="text/javascript">
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'abel123',
-                disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/posts/2015-01-08-maven.html';
+                disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/posts/2015-01-12-serialize-and-unserialize.html';
             /* * * DON'T EDIT BELOW THIS LINE * * */
             (function() {
                 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

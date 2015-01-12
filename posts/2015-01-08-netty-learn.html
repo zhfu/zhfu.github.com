@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <title>zhfu's blog - maven和sbt使用</title>
+  <title>zhfu's blog - Netty Learn</title>
   <meta charset="utf-8" />
   <link href="http://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css">
   <link href="http://fonts.googleapis.com/css?family=Crimson+Text" rel="stylesheet" type="text/css">
@@ -27,25 +27,20 @@
     <section>
         <article>
 <header>
-<h1>maven和sbt使用</h1>
+<h1>Netty Learn</h1>
 <p>by <em>fukirk</em> on <strong>January  8, 2015</strong></p>
-<p>Tagged as: <a href="../tags/java.html">java</a>, <a href="../tags/maven.html">maven</a>.</p>
+<p>Tagged as: <a href="../tags/java.html">java</a>, <a href="../tags/netty.html">netty</a>, <a href="../tags/network.html">network</a>.</p>
 </header>
 
 <section>
-<p>计划去杭州，虽然之前用过java但忘光了，开始补java及深入研究，^_^。在学校也看过大半年scala，之后用不着就扔了，现在也捡起来吧，kafka和spark这么火，看看代码学习。</p>
-<h3 id="maven">maven</h3>
-<h4 id="安装">安装</h4>
-<p>到官网下载<a href="http://maven.apache.org/">Maven</a>, 将bin加入$PATH后即可,maven配置文件在conf目录下。</p>
-<h4 id="使用">使用</h4>
-<p><code>mvn archetype:create -DgroupId=com.kirk.hi -DartifactId=hi -DpackageName=com.kirk.hi -Dversion=1.0</code></p>
-<p>创建hi(artifactId)目录，及目录下的pom.xml，在其中自动添加了junit依赖。src下自动生成hello world。</p>
-<h5 id="构建">构建</h5>
-<p><code>mvn package</code> 结果在target目录下，运行<code>java -cp target/hi-1.0.jar com.kirk.hi.App</code></p>
-<h5 id="intellij">intellij</h5>
-<p>create project-&gt;右键Add Framework Support-&gt;maven，自动生成pom.xml</p>
-<p>把netty依赖写入pom.xml后，参考netty的user guide写个简单例子学习netty</p>
-<h3 id="sbt">sbt</h3>
+<h3 id="初试">初试</h3>
+<p>参照netty的<a href="http://netty.io/wiki/user-guide-for-4.x.html">User Guide</a>编写runnable程序。</p>
+<p>必须理解概念ServerHandler、ChannelFuture、EventLoopGroup.</p>
+<p>几个阶段channelRead、channelActive、handlerAdded、handlerRemoved、Encoder、Decoder。</p>
+<p>例子中抽象POJO(Plain Old Java Object)相比ByteBuf的好处</p>
+<h3 id="serverbootstrapbootsrap">ServerBootstrap、Bootsrap</h3>
+<h3 id="java-nio">java NIO</h3>
+<p>感觉是在select和非阻塞socket(也就是调用IO函数直接返回，不等待)上的各种概念封装。</p>
 </section>
 </article>
 
@@ -54,7 +49,7 @@
         <script type="text/javascript">
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'abel123',
-                disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/posts/2015-01-08-maven.html';
+                disqus_url = window.location.href.split('/').splice(0,3).join("/")+'/posts/2015-01-08-netty-learn.html';
             /* * * DON'T EDIT BELOW THIS LINE * * */
             (function() {
                 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
