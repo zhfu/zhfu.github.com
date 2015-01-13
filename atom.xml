@@ -27,9 +27,9 @@
 <p>A机器与B机器之间内存无法互相访问，必然需要序列化与反序列化，树要序列化必然要进行遍历，有DFS、BFS两种遍历方式，DFS大家熟知的序列化格式有xml、json或类似的方式。这里讲种BFS遍历方式，反序列化即构建树的层次结构，树本身是递归定义的，而DFS过程本身也是递归定义的，所以两者结合比较简单，对于BFS来说我们有什么，层次信息，即可以知道一层结点和下一层结点，而结点和它的子结点也构成层次关系，那么怎么利用层次关系进行反序列化？</p>
 <p>如果从一棵树取出两层，可以将第一层看作一堆孤立根结点，第二层是这些根结点的子结点的按顺序排列，那么只要在第二层结点中加入一些标记，将同一父节点的节点划分到一块，即将第二层分段就可以序列化反序列化父子关系。所以BFS方式的序列化反序列化其实很简单。</p>
 <p>代码</p>
-<p>struct Node{ string data; vector<Node *> child; };</p>
+<p>` struct Node{ string data; vector<Node *> child; };</p>
 <p>string serialize(Node <em>root) { queue<Node *> q; if(root == NULL) return string(); q.push(root); char tag = ‘x’; string ret = tag + serialize(root-&gt;data) + tag;//serialize string == puts value tag, length of string, string itself while(!q.empty()) { Node </em>cur = que.front(); que.pop(); ret += tag; for(size_t i = 0; i &lt; cur-&gt;child.size(); ++i) { ret += serialize(cur-&gt;child[i]); que.push(cur-&gt;child[i]); } ret += tag; } return ret; }</p>
-<p>Node* unserialize(string input) { if(input.empty()) return NULL; queue<Node*> q; Node* root; for(size_t i = 0; i &lt; input.size(); /<em>empty on purpose</em>/) { Node <em>tmp = NULL; if(!q.empty()) { tmp = q.front(); q.pop(); } if(str[i] == tag) { i += 1; while(str[i] != tag) { int len; string str = unserialize(input, i + 1, len); Node </em>node = new Node(str); if(tmp) tmp-&gt;child.push_back(node); else root = node; q.push(node); } i += 1; } } return root; }</p>
+<p>Node* unserialize(string input) { if(input.empty()) return NULL; queue<Node*> q; Node* root; for(size_t i = 0; i &lt; input.size(); /<em>empty on purpose</em>/) { Node <em>tmp = NULL; if(!q.empty()) { tmp = q.front(); q.pop(); } if(str[i] == tag) { i += 1; while(str[i] != tag) { int len; string str = unserialize(input, i + 1, len); Node </em>node = new Node(str); if(tmp) tmp-&gt;child.push_back(node); else root = node; q.push(node); } i += 1; } } return root; } `</p>
 </section>
 </article>
 ]]></summary>
