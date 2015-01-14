@@ -39,17 +39,18 @@ string serialize(Node *root)
 	<span class="kw">if</span>(root == NULL)
 		<span class="kw">return</span> string();
 	q.push(root);
-	<span class="dt">char</span> tag = <span class="st">'x'</span>;
-	string ret = tag + serialize(root-&gt;data) + tag;<span class="co">//serialize string == puts value tag, length of string, string itself</span>
+	<span class="dt">const</span> <span class="dt">char</span> tag = <span class="st">'x'</span>;
+	string ret = tag + serialize(root-&gt;data) + tag;
+	<span class="co">//serialize string == puts value tag, length of string, string itself</span>
 	<span class="kw">while</span>(!q.empty())
 	{
-		Node *cur = que.front();
-		que.pop();
+		Node *cur = q.front();
+		q.pop();
 		ret += tag;
 		<span class="kw">for</span>(size_t i = <span class="dv">0</span>; i &lt; cur-&gt;child.size(); ++i)
 		{
 			ret += serialize(cur-&gt;child[i]);
-			que.push(cur-&gt;child[i]);
+			q.push(cur-&gt;child[i]);
 		}
 		ret += tag;
 	}
@@ -76,7 +77,9 @@ Node* unserialize(string input)
 			<span class="kw">while</span>(str[i] != tag)
 			{
 				<span class="dt">int</span> len;
-				string str = unserialize(input, i + <span class="dv">1</span>, len);
+				string str = unserialize(input, i , len);
+				<span class="co">//len reference value returned for length of occupied characters</span>
+				i += len;
 				Node *node = <span class="kw">new</span> Node(str);
 				<span class="kw">if</span>(tmp)
 					tmp-&gt;child.push_back(node);
@@ -89,6 +92,9 @@ Node* unserialize(string input)
 	}
 	<span class="kw">return</span> root;
 }</code></pre>
+<h3 id="序列化库">序列化库</h3>
+<p>分两层。底层为key-value形式的二进制读写库，一般为tag+value的自包含(容易扩展)的分段。上层为IDL中间定义语言和对应的compiler。</p>
+<p>key-value二进制读写，从功能上来说无任何难度关键是空间占用和时间效率优化，比如key是字符串的话可以在第一次读取的时候遍历所有key建立字典树trie，加快之后的查找速度。还有protobuf的整数优化、zigzag(大多数时候数值都较小)。</p>
 </section>
 </article>
 ]]></summary>
@@ -244,12 +250,10 @@ Node* unserialize(string input)
 <h3 id="backend">backend:</h3>
 <ul>
 <li><p>WEB frameworks. For business logic.</p></li>
-<li><p>Naming Service. 服务与机器列表解耦，方便运维。为了管理方便，一般分部门分组分业务成树状组织。好多公司使用zoopkeeper实现，完全没必要，该功能对一致性要求很低，对可用性要求极高，好的方式使用mysql + cache实现，本机加带cache的naming agent(减少对模块的侵入，方便升级）。同时增加一些额外信息的支持，如百度BNS，单独机器与服务都可配置k-v键值对。同时防止naming service的错误引起的雪崩，如增加阈值、低于阈值不更新功能以避免误配置，如何支持单机预上线验证。</p></li>
-</ul>
+<li><p>Naming Service. 服务与机器列表解耦，方便运维。为了管理方便，一般分部门分组分业务成树状组织。好多公司使用zoopkeeper实现，完全没必要，该功能对一致性要求很低，对可用性要求极高，好的方式使用mysql + cache实现，本机加带cache的naming agent(减少对模块的侵入，方便升级）。同时增加一些额外信息的支持，如百度BNS，单独机器与服务都可配置k-v键值对。同时防止naming service的错误引起的雪崩，如增加阈值、低于阈值不更新功能以避免误配置，如何支持单机预上线验证。</p>
 <p>开源项目参考Netflix的(eureka)[https://github.com/Netflix/eureka/)</p>
 <p>相关文章</p>
-<p>使用zookeeper作naming service的坏处 http://www.infoq.com/cn/news/2014/12/zookeeper-service-finding</p>
-<ul>
+<p>使用zookeeper作naming service的坏处 http://www.infoq.com/cn/news/2014/12/zookeeper-service-finding</p></li>
 <li><p>ACL. web模块访问后端的中间层，一般与Naming Service相关联，需要支持不同协议和格式转换，配置简洁，作为web框架扩展或单独服务（建议作为框架扩展）。参考百度的RAL。</p></li>
 <li><p>DBproxy. 方便读写分离，自动化主从切换。</p></li>
 <li><p>cache cluster. 缓存应该可用性高。</p></li>

@@ -49,17 +49,18 @@ string serialize(Node *root)
 	<span class="kw">if</span>(root == NULL)
 		<span class="kw">return</span> string();
 	q.push(root);
-	<span class="dt">char</span> tag = <span class="st">'x'</span>;
-	string ret = tag + serialize(root-&gt;data) + tag;<span class="co">//serialize string == puts value tag, length of string, string itself</span>
+	<span class="dt">const</span> <span class="dt">char</span> tag = <span class="st">'x'</span>;
+	string ret = tag + serialize(root-&gt;data) + tag;
+	<span class="co">//serialize string == puts value tag, length of string, string itself</span>
 	<span class="kw">while</span>(!q.empty())
 	{
-		Node *cur = que.front();
-		que.pop();
+		Node *cur = q.front();
+		q.pop();
 		ret += tag;
 		<span class="kw">for</span>(size_t i = <span class="dv">0</span>; i &lt; cur-&gt;child.size(); ++i)
 		{
 			ret += serialize(cur-&gt;child[i]);
-			que.push(cur-&gt;child[i]);
+			q.push(cur-&gt;child[i]);
 		}
 		ret += tag;
 	}
@@ -86,7 +87,9 @@ Node* unserialize(string input)
 			<span class="kw">while</span>(str[i] != tag)
 			{
 				<span class="dt">int</span> len;
-				string str = unserialize(input, i + <span class="dv">1</span>, len);
+				string str = unserialize(input, i , len);
+				<span class="co">//len reference value returned for length of occupied characters</span>
+				i += len;
 				Node *node = <span class="kw">new</span> Node(str);
 				<span class="kw">if</span>(tmp)
 					tmp-&gt;child.push_back(node);
@@ -99,6 +102,9 @@ Node* unserialize(string input)
 	}
 	<span class="kw">return</span> root;
 }</code></pre>
+<h3 id="序列化库">序列化库</h3>
+<p>分两层。底层为key-value形式的二进制读写库，一般为tag+value的自包含(容易扩展)的分段。上层为IDL中间定义语言和对应的compiler。</p>
+<p>key-value二进制读写，从功能上来说无任何难度关键是空间占用和时间效率优化，比如key是字符串的话可以在第一次读取的时候遍历所有key建立字典树trie，加快之后的查找速度。还有protobuf的整数优化、zigzag(大多数时候数值都较小)。</p>
 </section>
 </article>
 
